@@ -1,0 +1,9 @@
+/WebApi/obj
+/WebApi/bin
+
+/WebApi.IdentityServer/obj
+/WebApi.IdentityServer/bin
+/WebApi.IdentityServer/.vs
+
+.vs
+*.rsa
