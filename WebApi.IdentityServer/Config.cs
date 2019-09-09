@@ -1,5 +1,6 @@
 ﻿using IdentityServer4;
 using IdentityServer4.Models;
+using IdentityServer4.Test;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,6 +62,35 @@ namespace WebApi.IdentityServer
                         new Secret("secret".Sha256())
                     },
                     AllowedScopes={ "api1"}
+                },
+                new Client()
+                {
+                    ClientId="user.client",
+                    AllowedGrantTypes= GrantTypes.ResourceOwnerPassword,
+                    ClientSecrets=
+                    {
+                        new Secret("secret".Sha256())
+                    },
+                    AllowedScopes={ "api1"}
+                }
+            };
+        }
+
+        public static List<TestUser> GetTestUsers()
+        {
+            return new List<TestUser>()
+            {
+                new TestUser()
+                {
+                    SubjectId="111",
+                    Username= "ZhangSan",
+                    Password="password"
+                },
+                new TestUser()
+                {
+                    SubjectId="222",
+                    Username="LiSi",
+                    Password="password"
                 }
             };
         }

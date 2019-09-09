@@ -5,10 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WebApi.IdentityServer.Contexts;
+using WebApi.IdentityServer.Models;
 
 namespace WebApi.IdentityServer
 {
@@ -33,21 +37,31 @@ namespace WebApi.IdentityServer
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            var builder= services.AddIdentityServer(options =>
+            services.AddDbContext<IdentityContext>(options =>
             {
-                options.Events.RaiseErrorEvents = true;
-                options.Events.RaiseFailureEvents = true;
-                options.Events.RaiseInformationEvents = true;
-                options.Events.RaiseSuccessEvents = true;
-            })
+                options.UseSqlServer(Configuration.GetConnectionString("IdentityServerConnection"));
+            });
+
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<IdentityContext>()
+                .AddDefaultTokenProviders();
+
+            var builder = services.AddIdentityServer(options =>
+             {
+                 options.Events.RaiseErrorEvents = true;
+                 options.Events.RaiseFailureEvents = true;
+                 options.Events.RaiseInformationEvents = true;
+                 options.Events.RaiseSuccessEvents = true;
+             })
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryApiResources(Config.GetApis())
-                .AddInMemoryClients(Config.GetClients());
-
+                .AddInMemoryClients(Config.GetClients())
+                .AddAspNetIdentity<ApplicationUser>();  // 这里需要添加单独的包：IdentityServer4.AspNetIdentity
+             //.AddTestUsers(Config.GetTestUsers()); // 在内存中添加测试用户
+         
             if (Environment.IsDevelopment())
                 builder.AddDeveloperSigningCredential();
 
-            //services.AddAuthentication();
 
         }
 
