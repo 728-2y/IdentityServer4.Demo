@@ -4,6 +4,7 @@
 /WebApi.IdentityServer/obj
 /WebApi.IdentityServer/bin
 /WebApi.IdentityServer/.vs
+/WebApi.IdentityServer/Migrations
 
 .vs
 *.rsa
