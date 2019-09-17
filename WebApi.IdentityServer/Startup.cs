@@ -61,8 +61,6 @@ namespace WebApi.IdentityServer
          
             if (Environment.IsDevelopment())
                 builder.AddDeveloperSigningCredential();
-
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

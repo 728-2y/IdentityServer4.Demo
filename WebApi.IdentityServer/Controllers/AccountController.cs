@@ -18,12 +18,12 @@ namespace WebApi.IdentityServer.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        //private readonly ILogger _logger;
-        public AccountController(UserManager<ApplicationUser> userManager,SignInManager<ApplicationUser> signInManager)
+        private readonly ILogger _logger;
+        public AccountController(UserManager<ApplicationUser> userManager,SignInManager<ApplicationUser> signInManager,ILogger<AccountController> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-          //  _logger = logger;
+            _logger = logger;
         }
 
         [HttpPost("signIn")]
@@ -49,7 +49,7 @@ namespace WebApi.IdentityServer.Controllers
             }
             catch (Exception ex)
             {
-
+                _logger.LogDebug(ex.Message);
                 return InternalServerError($"Errors:{ex.Message}");
             }
         }
@@ -98,6 +98,7 @@ namespace WebApi.IdentityServer.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogDebug(ex.Message);
                 return InternalServerError($"Errors:{ex.Message}");
             }            
         }
